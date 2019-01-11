@@ -1,3 +1,4 @@
 const userCon = require('./userCon');
+const translateCon = require('./translateCon')
 
-module.exports = { userCon };
+module.exports = { userCon, translateCon };

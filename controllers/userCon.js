@@ -2,10 +2,11 @@ const { User } = require('../models');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const { hashPass, comparePass } = require('../helpers');
+const {OAuth2Client} = require('google-auth-library');
 require('dotenv').config();
 
 class UserCon {
-    static singup(req, res, next) {
+    static register(req, res, next) {
         let password = hashPass(req.body.password);
         User.create({
             username: req.body.username,
@@ -57,6 +58,46 @@ class UserCon {
             })
     }
 
+    static googleLogin(req, res, next) {
+        const client = new OAuth2Client('1057169530276-p11cs6dgri9i5mul9iktmo4at4pc75lu.apps.googleusercontent.com');
+        var payload = {}
+        client.verifyIdToken({
+            idToken: req.body.id_token,
+            audience: '1057169530276-p11cs6dgri9i5mul9iktmo4at4pc75lu.apps.googleusercontent.com'
+        })
+        .then(function(ticket) {
+            payload = ticket.getPayload()
+            return User.findOne({email: payload.email})
+        })
+        .then(user => {
+            if (!user) {
+                User.create({
+                    email: payload.email
+                })
+                .then(newUser => {
+                    var token = jwt.sign({
+                        email: newUser.email
+                    }, process.env.JWT_SECRET)
+                    res.status(200).json({
+                        token: token
+                    })
+                })
+                .catch(function(error) {
+                    res.status(500).json({
+                        msg: 'internal server error',
+                        error: error
+                    })
+                })
+            } else {
+                var token = jwt.sign({
+                    email: payload.email
+                }, process.env.JWT_SECRET)
+                res.status(200).json({
+                    token: token
+                })
+            }
+        })
+    }
 };
 
 module.exports = UserCon;
