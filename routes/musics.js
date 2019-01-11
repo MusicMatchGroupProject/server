@@ -5,7 +5,7 @@ const musicController = require('../controllers/musicCon')
 router.get('/', musicController.showTopSong)
 router.get('/:title', musicController.showOneMusic)
 router.get('/?artist=&lyrics=', musicController.Showlyrics)
-router.get('/lyrics/', musicController.ShowOnelyrics)
+router.get('/search/lyrics/:id', musicController.ShowOnelyrics)
 router.get('/songs/:search', musicController.listeningSong)
 
 module.exports = router   

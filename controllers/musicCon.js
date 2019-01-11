@@ -70,9 +70,10 @@ module.exports = {
         },
     
         ShowOnelyrics: function (req, res) {
+            console.log(req.query.id)
             axios({
                 method: "get",
-                url: `http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${req.query.id}&apikey=${process.env.API_KEY}`,
+                url: `http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${req.params.id}&apikey=${process.env.API_KEY}`,
             })
             .then((response) => {
                 console.log(response.data)
