@@ -59,11 +59,11 @@ class UserCon {
     }
 
     static googleLogin(req, res, next) {
-        const client = new OAuth2Client('1057169530276-p11cs6dgri9i5mul9iktmo4at4pc75lu.apps.googleusercontent.com');
+        const client = new OAuth2Client('538354353006-m1asnrg9t3e0vp3j1tk30chuknv12dv7.apps.googleusercontent.com');
         var payload = {}
         client.verifyIdToken({
             idToken: req.body.id_token,
-            audience: '1057169530276-p11cs6dgri9i5mul9iktmo4at4pc75lu.apps.googleusercontent.com'
+            audience: '538354353006-m1asnrg9t3e0vp3j1tk30chuknv12dv7.apps.googleusercontent.com'
         })
         .then(function(ticket) {
             payload = ticket.getPayload()
